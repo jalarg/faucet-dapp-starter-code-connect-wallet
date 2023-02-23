@@ -1,66 +1,60 @@
-import { useEffect, useState } from "react";
 import "./App.css";
+import { useState, useEffect } from "react";
 
 function App() {
   const [walletAddress, setWalletAddress] = useState("");
 
   useEffect(() => {
-    getCurrentWalletConnected();
+    getCurrentWallet();
     addWalletListener();
-  }, [walletAddress]);
+  }, []);
 
   const connectWallet = async () => {
-    if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
+    if (typeof window !== "undefined" && typeof window.ethereum !== undefined)
       try {
-        /* MetaMask is installed */
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
         setWalletAddress(accounts[0]);
-        console.log(accounts[0]);
-      } catch (err) {
-        console.error(err.message);
+        console.log(walletAddress);
+      } catch (error) {
+        console.error(error.message);
       }
-    } else {
-      /* MetaMask is not installed */
-      console.log("Please install MetaMask");
+    else {
+      console.log("Please install metamask");
     }
   };
 
-  const getCurrentWalletConnected = async () => {
-    if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
+  const getCurrentWallet = async () => {
+    if (typeof window !== "undefined" && typeof window.ethereum !== undefined)
       try {
         const accounts = await window.ethereum.request({
           method: "eth_accounts",
         });
         if (accounts.length > 0) {
           setWalletAddress(accounts[0]);
-          console.log(accounts[0]);
+          console.log(walletAddress);
         } else {
-          console.log("Connect to MetaMask using the Connect button");
+          console.log("Connect to metamask using connect wallet.");
         }
-      } catch (err) {
-        console.error(err.message);
+      } catch (error) {
+        console.error(error.message);
       }
-    } else {
-      /* MetaMask is not installed */
-      console.log("Please install MetaMask");
+    else {
+      console.log("Please install metamask");
     }
   };
 
   const addWalletListener = async () => {
-    if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
+    if (typeof window !== "undefined" && typeof window.ethereum !== undefined) {
       window.ethereum.on("accountsChanged", (accounts) => {
         setWalletAddress(accounts[0]);
-        console.log(accounts[0]);
+        console.log(walletAddress);
       });
     } else {
-      /* MetaMask is not installed */
       setWalletAddress("");
-      console.log("Please install MetaMask");
     }
   };
-
   return (
     <div>
       <nav className="navbar">
@@ -76,11 +70,11 @@ function App() {
               >
                 <span className="is-link has-text-weight-bold">
                   {walletAddress && walletAddress.length > 0
-                    ? `Connected: ${walletAddress.substring(
+                    ? `Connected" :${walletAddress.substring(
                         0,
                         6
                       )}...${walletAddress.substring(38)}`
-                    : "Connect Wallet"}
+                    : "Connect wallet"}
                 </span>
               </button>
             </div>
